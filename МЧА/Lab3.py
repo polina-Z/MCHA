@@ -46,7 +46,7 @@ def maxInMatrix(matrixExt, column):
             max_element = matrixExt[i][column]
             max_row = i
     if max_row != column:
-        matrixExt[column], matrixExt[max_row] = matrixExt[max_row], matrixExt[column]
+        matrixExt[[column, max_column],:] = matrixExt[[max_coolumn, column],:]
 
 def GaussMethod(matrixExt):
     n = len(matrixExt)
