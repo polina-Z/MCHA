@@ -85,7 +85,7 @@ def chord_method(left, right):
         elif f(right) * f(x) <= 0:
             left = x
         else:
-            raise RuntimeError("Something is wrong in second chord method")
+            raise RuntimeError("Something is wrong in chord method")
     return x
 
 
@@ -103,6 +103,8 @@ def newton_method(left, right):
         Iters += 1
         old_x = x
         x = x - f(x) / f_der(x)
+    if x < left or x > right:
+        raise RuntimeError("Something is wrong in newton method")
     return x
 
 
