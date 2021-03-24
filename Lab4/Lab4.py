@@ -83,7 +83,7 @@ def main():
     EPS = 10.0 ** -5
     global ITERATIONS
     ITERATIONS = 0
-    x_0 = 0.34
+    x_0 = 0.35
     y_0 = 0.67
     print("Initial guess =", (x_0, y_0))
     print()
