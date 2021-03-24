@@ -1,31 +1,30 @@
 import numpy
 
-global m
-global a
+
 global EPS
 global ITERATIONS
 
 
 def first_equ(x, y):
-    return numpy.tan(x * y + m) - x
+    return x*y-y+1
 
 
 def second_equ(x, y):
-    return a * (x ** 2) + 2 * (y ** 2) - 1
+    return 5*x-y**2+2
 
 
-def x_equ(x, y):
-    return numpy.tan(x * y + m)
+def x_equ(y):
+    return (y-1)/y
 
 
 def y_equ(x):
-    return numpy.sqrt((1 - a * (x ** 2)) / 2)
+    return numpy.sqrt(5*x+2)
 
 
 def jacobi_matrix(x, y):
     return numpy.array([
-        [(1 + numpy.tan(x * y + m) ** 2) * y - 1, (1 + numpy.tan(x * y + m) ** 2) * x],
-        [2 * a * x, 4 * y]])
+        [y, x-1],
+        [5, -2*y]])
 
 
 def simple_iteration_method(x_0, y_0):
@@ -36,7 +35,7 @@ def simple_iteration_method(x_0, y_0):
         ITERATIONS += 1
         old_x = x
         old_y = y
-        x = x_equ(x, y)
+        x = x_equ(y)
         y = y_equ(x)
         if not (numpy.isfinite(x) and numpy.isfinite(y)):
             raise RuntimeError("Sequence {x} is divergent")
@@ -75,16 +74,12 @@ def wrapping_function(method, x_0, y_0):
 
 
 def main():
-    global m
-    m = 0.1
-    global a
-    a = 0.8
     global EPS
     EPS = 10.0 ** -5
     global ITERATIONS
     ITERATIONS = 0
-    x_0 = 0.35
-    y_0 = 0.67
+    x_0 = 0.5
+    y_0 = 2.0
     print("Initialization values =", (x_0, y_0))
     print()
     wrapping_function(simple_iteration_method, x_0, y_0)
