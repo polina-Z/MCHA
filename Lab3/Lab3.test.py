@@ -6,7 +6,7 @@ Iters = 0
 
 
 def input_polynomial():
-    expr = numpy.poly1d([1.0, -6.4951, -31.2543, 23.1782])
+    expr = numpy.poly1d([5.0, -6.0, 1.0])
     return expr
 
 
@@ -46,7 +46,7 @@ def calc_bounds(f, left, right):
         return []
     if N(Sturm, left) - N(Sturm, right) > 1:
         while True:
-            med = left + (right - left) / (1.3)
+            med = left + (right - left) / (1.5 + numpy.random.random())
             if abs(f(med)) > EPS:
                 break
         return calc_bounds(f, left, med) + calc_bounds(f, med, right)
@@ -56,7 +56,7 @@ def calc_bounds(f, left, right):
 
 
 Sturm = sturm_seq(f)
-bounds = calc_bounds(f, -10, 10)
+bounds = calc_bounds(f, -3, 3)
 
 
 def half_division_method(left, right):
@@ -103,8 +103,8 @@ def newton_method(left, right):
         Iters += 1
         old_x = x
         x = x - f(x) / f_der(x)
-    #if x < left or x > right:
-    #    raise RuntimeError("Something is wrong in newton method")
+    if x < left or x > right:
+        raise RuntimeError("Something is wrong in newton method")
     return x
 
 
@@ -139,16 +139,28 @@ def wrapping_function(method):
         Iters = 0
     except Exception as ex:
         print(
-            "ERROR: {} - in {} method (total number of iterations: {}  for the minimum root: {})".format(
+            "ERROR: {} - in {} method (total number of iterations: {}б  for the minimum root: {})".format(
                 ex, method.__name__, sum_iters, Iters
             )
         )
+
+def test(method):
+    global Iters
+    for i in range(len(bounds)):
+        Iters = 0
+        try:
+            str = method(*bounds[i])
+            if  (not str is None):
+                str = "{:.4f}".format(str)
+            print("Method: {} \t  {}  (number of iterations: {})".format(method.__name__, str, Iters))
+        except Exception as ex:
+            print("ERROR: {} - in {} method (with {} iterations)".format(ex, method.__name__, Iters))
 
 
 def main():
     print("f(x):\n", f)
 
-    print("\nNumber of roots in the interval [-10, 10]:\t", N(Sturm, -10) - N(Sturm, 10), "\n")
+    print("\nNumber of roots in the interval [-3, 3]:\t", N(Sturm, -3) - N(Sturm, 3), "\n")
 
     print("Bounds with roots:")
     print(bounds)
@@ -156,11 +168,11 @@ def main():
     numpy.set_printoptions(suppress=True, precision=5, floatmode="fixed")
 
     print()
-    wrapping_function(half_division_method)
+    test(half_division_method)
     print()
-    wrapping_function(chord_method)
+    test(chord_method)
     print()
-    wrapping_function(newton_method)
+    test(newton_method)
     print()
 
     print("Checking with built-in function:")
@@ -172,5 +184,3 @@ if __name__ == "__main__":
         main()
     except KeyboardInterrupt:
         print("Program was stopped with error")
-
-

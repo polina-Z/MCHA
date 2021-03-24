@@ -1,17 +1,13 @@
 import numpy as np
 
 
-def simple_iteration_method(A, b, init_vector=None):
+def simple_iteration_method(A, b):
     B = np.eye(A.shape[0]) - A / np.diag(A).reshape(-1, 1)
     if min(np.linalg.norm(B, ord=norm) for norm in (np.inf, 1, "fro")) >= 1:
         raise ValueError("Simple iteration method cannot be performed")
     c = b / np.diag(A).reshape(-1, 1)
-    if init_vector is None:
-        c.dtype = float
-        xk = c.copy()
-    else:
-        init_vector.dtype = float
-        xk = init_vector.copy()
+    c.dtype = float
+    xk = c.copy()
     iteration_number_method1 = 2
     while True:
         xk_1 = xk.copy()
@@ -62,7 +58,6 @@ def main():
             print("Simple iteration method cannot be performed")
             return 0
     print()
-    _true_x = (np.linalg.inv(A) @ b).reshape(-1)
     print("Number of iteration steps:")
     print(f"{'x =':<1} {simple_iteration_method(A, b).reshape(-1)}{'T'}")
 

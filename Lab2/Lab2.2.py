@@ -24,7 +24,7 @@ def seidel_method(A, b, init_vector=None):
             B2 = np.sum(B[i, i:] * xk_1[i:])
             xk[i] = B1 + B2 + c[i]
         eps = np.linalg.norm(B) * np.linalg.norm(xk - xk_1) / (1 - np.linalg.norm(B))
-        if eps < 1e-3:
+        if eps < 1e-4:
             break
         iteration_number_method2 += 1
     print(iteration_number_method2)
