@@ -85,7 +85,7 @@ def main():
     ITERATIONS = 0
     x_0 = 0.35
     y_0 = 0.67
-    print("Initial guess =", (x_0, y_0))
+    print("Initialization values =", (x_0, y_0))
     print()
     wrapping_function(simple_iteration_method, x_0, y_0)
     wrapping_function(newton_method, x_0, y_0)
