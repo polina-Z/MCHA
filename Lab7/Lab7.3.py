@@ -11,7 +11,8 @@ def main():
 
     print(f"f({x_var}) =", f(x_var))
     print(f"S({x_var}) =", spl(x_var))
-    print(f"y_s - y_var =", abs(f(x_var) - spl(x_var)))
+    minus = abs(f(x_var) - spl(x_var))
+    print(f"S({x_var}) - f({x_var}) = {minus}".format(x_var, minus))
     plt.plot(x, y, 'og')
     xplot = np.linspace(min(x), max(x), plotdots)
 
