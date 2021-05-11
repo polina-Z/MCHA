@@ -5,8 +5,8 @@ import numpy as np
 EPS = 0.001
 
 a = 0
-b = 1
-y0 = 0
+b = 5
+y0 = 1
 
 
 def to_fixed(numObj, digits=0):
@@ -16,7 +16,7 @@ def to_fixed(numObj, digits=0):
 
 
 def f(y, x):
-    return (1.0 * (1 - y ** 2)) / ((1 + 1.3) * (x ** 2) + (y ** 2) + 1)
+    return -y
 
 
 def runge_kutta(x, step):
@@ -56,19 +56,11 @@ def exact(x):
     return sol[1][0]
 
 
-def next_modified_y(x, y_prev, h):
-    return y_prev + h*f(x+h/2, y_prev+h/2*f(x, y_prev))
-
-
-def euler(h):
-    x = a
-    y = 0
-    y_k = []
-    while x <= b:
-        y_k.append(y)
-        y = next_modified_y(x, y, h)
-        x += h
-    return y_k
+def euler(x, step):
+    if x <= a:
+        return y0
+    prev = euler(x - step, step)
+    return prev + step * f(prev + (step/2)*f(prev, x), x + (step/2))
 
 
 def main():
@@ -83,11 +75,12 @@ def main():
     xlist = np.arange(a, b + step, step)
     runge_kutta_points = []
     euler_points = []
-    euler_points = euler(step)
     exact_points = []
     x = a
     while x <= b:
         r = runge_kutta(x, step)
+        r1 = euler(x, step)
+        euler_points.append(r1)
         r2 = exact(x)
         runge_kutta_points.append(r)
         exact_points.append(r2)
